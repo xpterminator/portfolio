@@ -24,8 +24,6 @@ import img3 from './images/7.jpg'
 // ==========================================
 // MOCK DATA & ASSETS
 // ==========================================
-// Replaced local imports with direct URLs for the preview to work properly, 
-// but you can swap these back to your img1, img2 imports if you prefer!
 const MOCK_VIDEOS = [
   "https://youtu.be/bHM_Hv7yolw?si=JQq4_1erK12qVsxR",
   "https://www.youtube.com/watch?v=Ixz00Ey_6nc&t=78s",
@@ -99,78 +97,74 @@ const FadeInSection = ({ children, className = "", delay = 0 }) => {
 // ==========================================
 // COMPONENTS
 // ==========================================
-
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-black/60 backdrop-blur-md border-b border-[#00f8f8]/20 py-4" : "bg-transparent py-6"
-      }`}
-    >
+    <nav className="absolute top-0 left-0 right-0 z-50 py-6">
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <div className="text-2xl font-black text-white tracking-wider cursor-pointer transition-all duration-300 hover:text-[#00f8f8] hover:drop-shadow-[0_0_10px_#00f8f8]">
+        
+        {/* Logo */}
+        <div className="text-xl md:text-2xl font-black text-white tracking-wider cursor-pointer transition-all duration-300 hover:text-[#00f8f8] hover:drop-shadow-[0_0_10px_#00f8f8] flex-shrink-0">
           XpTerminator
         </div>
 
-        <div className="hidden md:flex items-center space-x-8">
+        {/* Desktop Links (Box Design) */}
+        <div className="hidden md:flex items-center space-x-8 px-8 py-3 rounded-xl backdrop-blur-md border bg-[#0a0a0a]/60 border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
           {["Home", "Work", "About Us"].map((item) => (
             <a
               key={item}
               href={`#${item.toLowerCase().replace(" ", "-")}`}
-              className="text-gray-300 font-medium text-sm relative group transition-colors hover:text-white"
+              className="text-gray-300 font-medium relative group transition-colors duration-300 hover:text-[#00f8f8]"
             >
               {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-[#00f8f8] transition-all duration-300 group-hover:w-full shadow-[0_0_8px_#00f8f8]"></span>
+              {/* Sliding underline (scroll effect) without zooming text */}
+              <span className="absolute -bottom-1.5 left-0 w-0 h-[2px] bg-[#00f8f8] transition-all duration-300 ease-out group-hover:w-full shadow-[0_0_8px_#00f8f8]"></span>
             </a>
           ))}
         </div>
 
-        <div className="hidden md:block">
-          <button className="flex items-center gap-2 bg-[#00f8f8] text-black px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_#00f8f8] hover:-translate-y-0.5">
+        {/* Desktop Hire Us Button */}
+        <div className="hidden md:block flex-shrink-0">
+          <button className="flex items-center gap-2 bg-[#00f8f8] text-black px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_#00f8f8] hover:-translate-y-0.5 transform">
             <Briefcase size={16} />
             Hire Us
           </button>
         </div>
 
+        {/* Mobile Menu Toggle */}
         <button 
-          className="md:hidden text-[#00f8f8]"
+          className="md:hidden text-white hover:text-[#00f8f8] p-2.5 rounded-xl bg-[#0a0a0a]/60 hover:bg-[#050505]/85 border border-white/10 transition-all duration-300 backdrop-blur-md"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
-          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
-      {mobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-[#00f8f8]/20 flex flex-col items-center py-6 space-y-6">
-          {["Home", "Work", "About Us"].map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-white text-lg font-medium hover:text-[#00f8f8]"
-            >
-              {item}
-            </a>
-          ))}
-          <button className="flex items-center gap-2 bg-[#00f8f8] text-black px-8 py-3 rounded-full font-bold transition-all shadow-[0_0_15px_#00f8f8]">
-            <Briefcase size={18} />
-            Hire Us
-          </button>
-        </div>
-      )}
+      {/* Mobile Menu Dropdown */}
+      <div className={`md:hidden absolute top-[calc(100%+0.5rem)] left-4 right-4 bg-[#0a0a0a]/95 backdrop-blur-2xl border border-[#00f8f8]/20 rounded-2xl flex flex-col items-center py-8 space-y-6 transition-all duration-500 origin-top overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.7)] ${
+        mobileMenuOpen ? "opacity-100 scale-y-100 pointer-events-auto" : "opacity-0 scale-y-0 pointer-events-none"
+      }`}>
+        {["Home", "Work", "About Us"].map((item) => (
+          <a
+            key={item}
+            href={`#${item.toLowerCase().replace(" ", "-")}`}
+            onClick={() => setMobileMenuOpen(false)}
+            className="text-white text-xl font-medium hover:text-[#00f8f8] transition-colors"
+          >
+            {item}
+          </a>
+        ))}
+        <button className="flex items-center gap-2 bg-[#00f8f8] text-black px-8 py-3.5 rounded-full font-bold transition-all shadow-[0_0_15px_#00f8f8] mt-4">
+          <Briefcase size={18} />
+          Hire Us
+        </button>
+      </div>
     </nav>
   );
 };
 
+// Hero Section
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-24 overflow-hidden">
@@ -181,7 +175,7 @@ const Hero = () => {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center text-center mt-12">
         <FadeInSection>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight max-w-5xl tracking-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-5xl font-black text-white leading-tight max-w-5xl tracking-tight">
             Turning Raw Footage Into Your Brand's <span className="text-[#00f8f8] drop-shadow-[0_0_15px_rgba(0,248,248,0.6)] italic">Best Story.</span>
           </h1>
         </FadeInSection>
@@ -198,12 +192,10 @@ const Hero = () => {
                   href={src}
                   target="_blank"
                   rel="noopener noreferrer"
-                  // Added transform-gpu to fix corner clipping glitches
                   className="relative min-w-[280px] md:min-w-[400px] h-[180px] md:h-[240px] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] block transform-gpu"
                 >
                   <img src={thumbUrl} alt="Sample work" className="w-full h-full object-cover transition-opacity duration-700 opacity-70 group-hover:opacity-100 relative z-0" />
                   
-                  {/* FIX: Added z-10 to force the play button to stay above the scaling image */}
                   <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors duration-300">
                     <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 group-hover:border-[#00f8f8] group-hover:text-[#00f8f8] transition-all duration-300">
                       <Play className="ml-1" size={20} fill="currentColor" />
@@ -232,6 +224,7 @@ const Hero = () => {
   );
 };
 
+// About Section
 const About = () => {
   return (
     <section id="about-us" className="relative h-auto py-24 md:h-[500px] flex items-center justify-center overflow-hidden">
@@ -262,6 +255,7 @@ const About = () => {
   );
 };
 
+// Long Video section
 const LongVideoSection = () => (
   <div className="mb-20">
     <div className="flex items-center gap-3 mb-6">
@@ -277,11 +271,9 @@ const LongVideoSection = () => (
         const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
         
         return (
-          // Added transform-gpu to fix corner clipping glitches
           <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[320px] md:min-w-[600px] aspect-video rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] block transform-gpu">
             <img src={thumbUrl} alt={item.title} className="w-full h-full object-cover relative z-0" />
             
-            {/* FIX: Added z-10 */}
             <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="w-16 h-16 rounded-full bg-[#00f8f8]/90 text-black flex items-center justify-center shadow-[0_0_30px_#00f8f8] backdrop-blur-md">
@@ -297,6 +289,7 @@ const LongVideoSection = () => (
   </div>
 );
 
+// short video
 const ShortVideoSection = () => (
   <div className="mb-20">
     <div className="flex items-center gap-3 mb-6">
@@ -308,16 +301,13 @@ const ShortVideoSection = () => (
     </div>
     <div className="flex overflow-x-auto gap-6 pb-8 hide-scrollbar snap-x snap-mandatory">
       {PORTFOLIO_SHORT.map((item) => (
-        // Added transform-gpu to fix corner clipping glitches
         <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[200px] md:min-w-[280px] aspect-[9/16] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] transition-all duration-500 block transform-gpu">
           <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-opacity duration-700 opacity-80 group-hover:opacity-100 relative z-0" />
           
-          {/* FIX: Added z-10 */}
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-5">
             <h4 className="text-lg font-bold text-white">{item.title}</h4>
           </div>
           
-          {/* FIX: Added z-10 */}
           <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-none">
             <Play size={14} fill="white" />
           </div>
@@ -327,6 +317,7 @@ const ShortVideoSection = () => (
   </div>
 );
 
+// thumbnail section
 const ThumbnailDesignSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
@@ -376,12 +367,10 @@ const ThumbnailDesignSection = () => {
           <div 
             key={item.id} 
             onClick={() => setSelectedIndex(index)}
-            // Added transform-gpu to fix corner clipping glitches
             className="relative min-w-[300px] md:min-w-[450px] aspect-video rounded-xl overflow-hidden snap-center cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] group transform-gpu"
           >
             <img src={item.img} alt={item.title} className="w-full h-full object-cover relative z-0" />
             
-            {/* FIX: Added z-10 */}
             <div className="absolute inset-0 z-10 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
               <span className="bg-black text-[#00f8f8] font-bold px-6 py-2 rounded-full border border-[#00f8f8] tracking-wider">
                 VIEW FULL
@@ -465,6 +454,7 @@ const Portfolio = () => {
   );
 };
 
+// footer
 const Footer = () => (
   <footer className="border-t border-[#00f8f8]/20 bg-black py-12 px-6 flex flex-col items-center text-center">
     <h2 className="text-2xl font-black text-white tracking-wider mb-8">
