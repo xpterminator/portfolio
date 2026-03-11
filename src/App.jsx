@@ -189,7 +189,7 @@ const Hero = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center text-center mt-12">
         <FadeInSection>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight max-w-5xl tracking-tight">
-            Turning raw footage into your brand's <span className="text-[#00f8f8] drop-shadow-[0_0_15px_rgba(0,248,248,0.6)]">best story.</span>
+            Turning Raw Footage Into Your Brand's <span className="text-[#00f8f8] drop-shadow-[0_0_15px_rgba(0,248,248,0.6)] italic">Best Story.</span>
           </h1>
         </FadeInSection>
 
@@ -248,11 +248,31 @@ const About = () => {
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <FadeInSection>
-          <h2 className="text-3xl md:text-5xl font-black text-[#00f8f8] mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,248,248,0.4)]">
+          {/* <h2 className="text-3xl md:text-5xl font-black text-[#00f8f8] mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,248,248,0.4)]">
             About Me
-          </h2>
+          </h2> */}
+          {/* <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
+  I am a professional video editor specializing in transforming raw footage into <strong className="text-white font-semibold">engaging visual stories</strong>. My expertise ranges from compelling long-form content like documentaries, podcasts, and vlogs, to fast-paced short-form videos including <strong className="text-white font-semibold">Instagram aesthetic reels, event showreels, and talking heads</strong>. Beyond video editing, I also design click-driven thumbnails and apply my creative direction daily on my own YouTube channel, <strong className="text-[#00f8f8] font-semibold">Tech Monk</strong>. Whether it's a cinematic cut or a viral short, I deliver a premium visual standard tailored to your brand.
+          </p> */}
+          <div className="max-w-4xl mx-auto px-6 py-12">
+  {/* Heading (Kept Centered) */}
+  <h2 className="text-4xl md:text-5xl font-bold text-[#00f8f8] text-center mb-8 drop-shadow-[0_0_10px_rgba(0,248,248,0.5)]">
+    About Me
+  </h2>
+
+  {/* Text Container (Left Aligned for readability, constrained width, spaced paragraphs) */}
+          <div className="text-gray-300 text-lg md:text-xl leading-relaxed font-light text-left space-y-6">
+              <p>
+                I am a professional video editor specializing in transforming raw footage into <strong className="text-white font-semibold">engaging visual stories</strong>. My expertise ranges from compelling long-form content like documentaries, podcasts, and vlogs, to fast-paced short-form videos including <strong className="text-white font-semibold">Instagram aesthetic reels, event showreels, and talking heads</strong>.
+              </p>
+              
+              <p>
+                Beyond video editing, I also design click-driven thumbnails and apply my creative direction daily on my own YouTube channel, <strong className="text-[#00f8f8] font-semibold">Tech Monk</strong>. Whether it's a cinematic cut or a viral short, I deliver a premium visual standard tailored to your brand.
+              </p>
+            </div>
+          </div>
           <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-            I am a professional video editor specializing in transforming ordinary clips into <strong className="text-white font-semibold">cinematic experiences</strong>. With a deep understanding of storytelling and modern branding, I help creators and agencies elevate their content. Whether it's fast-paced engaging shorts or compelling long-form documentaries, my creative direction ensures <strong className="text-white font-semibold">fast delivery</strong> without compromising on the <strong className="text-[#00f8f8] font-semibold">premium, high-end visual standard</strong> your brand deserves.
+
           </p>
         </FadeInSection>
       </div>
@@ -443,7 +463,7 @@ const Portfolio = () => {
       <div className="max-w-7xl mx-auto px-6">
         <FadeInSection>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-16 text-center">
-            Selected <span className="text-[#00f8f8]">Works</span>
+            SELECTED <span className="text-[#00f8f8]">WORKS</span>
           </h2>
         </FadeInSection>
 
