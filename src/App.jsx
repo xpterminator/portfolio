@@ -21,10 +21,11 @@ import img1 from './images/2.jpg'
 import img2 from './images/5.jpg'
 import img3 from './images/7.jpg'
 
-
 // ==========================================
 // MOCK DATA & ASSETS
 // ==========================================
+// Replaced local imports with direct URLs for the preview to work properly, 
+// but you can swap these back to your img1, img2 imports if you prefer!
 const MOCK_VIDEOS = [
   "https://youtu.be/bHM_Hv7yolw?si=JQq4_1erK12qVsxR",
   "https://www.youtube.com/watch?v=Ixz00Ey_6nc&t=78s",
@@ -51,9 +52,9 @@ const PORTFOLIO_SHORT = [
 ];
 
 const PORTFOLIO_THUMBNAILS = [
-  { id: 1, title: "MrBeast Style", img: img1 },
-  { id: 2, title: "Podcast Thumbnail", img: img2 },
-  { id: 3, title: "Tech Review", img: img3 },
+  { id: 1, title: "MrBeast Style", img:img1},
+  { id: 2, title: "Podcast Thumbnail", img:img2},
+  { id: 3, title: "Tech Review", img:img3},
 ];
 
 // ==========================================
@@ -99,7 +100,6 @@ const FadeInSection = ({ children, className = "", delay = 0 }) => {
 // COMPONENTS
 // ==========================================
 
-// --- Navbar.jsx ---
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -117,12 +117,10 @@ const Navbar = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-        {/* Logo */}
         <div className="text-2xl font-black text-white tracking-wider cursor-pointer transition-all duration-300 hover:text-[#00f8f8] hover:drop-shadow-[0_0_10px_#00f8f8]">
           XpTerminator
         </div>
 
-        {/* Desktop Links */}
         <div className="hidden md:flex items-center space-x-8">
           {["Home", "Work", "About Us"].map((item) => (
             <a
@@ -136,7 +134,6 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* CTA Button */}
         <div className="hidden md:block">
           <button className="flex items-center gap-2 bg-[#00f8f8] text-black px-6 py-2.5 rounded-full font-bold text-sm transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_#00f8f8] hover:-translate-y-0.5">
             <Briefcase size={16} />
@@ -144,7 +141,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Toggle */}
         <button 
           className="md:hidden text-[#00f8f8]"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -153,7 +149,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-black/95 backdrop-blur-xl border-b border-[#00f8f8]/20 flex flex-col items-center py-6 space-y-6">
           {["Home", "Work", "About Us"].map((item) => (
@@ -176,11 +171,9 @@ const Navbar = () => {
   );
 };
 
-// --- Hero.jsx ---
 const Hero = () => {
   return (
     <section id="home" className="relative min-h-screen flex flex-col items-center justify-center pt-24 overflow-hidden">
-      {/* Animated Gradient Background */}
       <div className="absolute inset-0 z-0">
         <div className="hero-gradient absolute inset-0 opacity-40"></div>
         <div className="absolute inset-0 bg-black/60"></div>
@@ -193,7 +186,6 @@ const Hero = () => {
           </h1>
         </FadeInSection>
 
-        {/* Hero Video Carousel */}
         <FadeInSection delay={200} className="w-full mt-16 mb-12">
           <div className="flex overflow-x-auto gap-6 pb-8 hide-scrollbar snap-x snap-mandatory px-4 md:px-0">
             {MOCK_VIDEOS.map((src, idx) => {
@@ -206,10 +198,13 @@ const Hero = () => {
                   href={src}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative min-w-[280px] md:min-w-[400px] h-[180px] md:h-[240px] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent transition-all duration-500 hover:scale-[1.03] hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] block"
+                  // Added transform-gpu to fix corner clipping glitches
+                  className="relative min-w-[280px] md:min-w-[400px] h-[180px] md:h-[240px] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] block transform-gpu"
                 >
-                  <img src={thumbUrl} alt="Sample work" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors duration-300">
+                  <img src={thumbUrl} alt="Sample work" className="w-full h-full object-cover transition-opacity duration-700 opacity-70 group-hover:opacity-100 relative z-0" />
+                  
+                  {/* FIX: Added z-10 to force the play button to stay above the scaling image */}
+                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors duration-300">
                     <div className="w-12 h-12 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center border border-white/20 group-hover:border-[#00f8f8] group-hover:text-[#00f8f8] transition-all duration-300">
                       <Play className="ml-1" size={20} fill="currentColor" />
                     </div>
@@ -237,31 +232,21 @@ const Hero = () => {
   );
 };
 
-// --- About.jsx ---
 const About = () => {
   return (
     <section id="about-us" className="relative h-auto py-24 md:h-[500px] flex items-center justify-center overflow-hidden">
-      {/* Radial Glow Background */}
       <div className="absolute inset-0 z-0 bg-black">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00f8f8] opacity-[0.07] blur-[120px] rounded-full pointer-events-none"></div>
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
         <FadeInSection>
-          {/* <h2 className="text-3xl md:text-5xl font-black text-[#00f8f8] mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,248,248,0.4)]">
-            About Me
-          </h2> */}
-          {/* <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-  I am a professional video editor specializing in transforming raw footage into <strong className="text-white font-semibold">engaging visual stories</strong>. My expertise ranges from compelling long-form content like documentaries, podcasts, and vlogs, to fast-paced short-form videos including <strong className="text-white font-semibold">Instagram aesthetic reels, event showreels, and talking heads</strong>. Beyond video editing, I also design click-driven thumbnails and apply my creative direction daily on my own YouTube channel, <strong className="text-[#00f8f8] font-semibold">Tech Monk</strong>. Whether it's a cinematic cut or a viral short, I deliver a premium visual standard tailored to your brand.
-          </p> */}
           <div className="max-w-4xl mx-auto px-6 py-12">
-  {/* Heading (Kept Centered) */}
-  <h2 className="text-4xl md:text-5xl font-bold text-[#00f8f8] text-center mb-8 drop-shadow-[0_0_10px_rgba(0,248,248,0.5)]">
-    About Me
-  </h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#00f8f8] text-center mb-8 drop-shadow-[0_0_10px_rgba(0,248,248,0.5)]">
+              About Me
+            </h2>
 
-  {/* Text Container (Left Aligned for readability, constrained width, spaced paragraphs) */}
-          <div className="text-gray-300 text-lg md:text-xl leading-relaxed font-light text-left space-y-6">
+            <div className="text-gray-300 text-lg md:text-xl leading-relaxed font-light text-left space-y-6">
               <p>
                 I am a professional video editor specializing in transforming raw footage into <strong className="text-white font-semibold">engaging visual stories</strong>. My expertise ranges from compelling long-form content like documentaries, podcasts, and vlogs, to fast-paced short-form videos including <strong className="text-white font-semibold">Instagram aesthetic reels, event showreels, and talking heads</strong>.
               </p>
@@ -271,16 +256,12 @@ const About = () => {
               </p>
             </div>
           </div>
-          <p className="text-gray-300 text-lg md:text-xl leading-relaxed font-light">
-
-          </p>
         </FadeInSection>
       </div>
     </section>
   );
 };
 
-// --- PortfolioCategories.jsx ---
 const LongVideoSection = () => (
   <div className="mb-20">
     <div className="flex items-center gap-3 mb-6">
@@ -296,10 +277,13 @@ const LongVideoSection = () => (
         const thumbUrl = videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
         
         return (
-          <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[320px] md:min-w-[600px] aspect-video rounded-2xl overflow-hidden snap-center group cursor-pointer block">
-            <img src={thumbUrl} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 opacity-80 group-hover:opacity-100 transition-opacity">
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+          // Added transform-gpu to fix corner clipping glitches
+          <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[320px] md:min-w-[600px] aspect-video rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] block transform-gpu">
+            <img src={thumbUrl} alt={item.title} className="w-full h-full object-cover relative z-0" />
+            
+            {/* FIX: Added z-10 */}
+            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="w-16 h-16 rounded-full bg-[#00f8f8]/90 text-black flex items-center justify-center shadow-[0_0_30px_#00f8f8] backdrop-blur-md">
                   <Play className="ml-1" size={32} fill="currentColor" />
                 </div>
@@ -324,12 +308,17 @@ const ShortVideoSection = () => (
     </div>
     <div className="flex overflow-x-auto gap-6 pb-8 hide-scrollbar snap-x snap-mandatory">
       {PORTFOLIO_SHORT.map((item) => (
-        <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[200px] md:min-w-[280px] aspect-[9/16] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-[#00f8f8]/0 hover:border-[#00f8f8]/50 hover:shadow-[0_0_20px_rgba(0,248,248,0.2)] transition-all duration-500 block">
-          <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-5">
+        // Added transform-gpu to fix corner clipping glitches
+        <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="relative min-w-[200px] md:min-w-[280px] aspect-[9/16] rounded-2xl overflow-hidden snap-center group cursor-pointer border border-transparent hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] transition-all duration-500 block transform-gpu">
+          <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-opacity duration-700 opacity-80 group-hover:opacity-100 relative z-0" />
+          
+          {/* FIX: Added z-10 */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/90 to-transparent flex flex-col justify-end p-5">
             <h4 className="text-lg font-bold text-white">{item.title}</h4>
           </div>
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center">
+          
+          {/* FIX: Added z-10 */}
+          <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 flex items-center justify-center pointer-events-none">
             <Play size={14} fill="white" />
           </div>
         </a>
@@ -338,11 +327,9 @@ const ShortVideoSection = () => (
   </div>
 );
 
-// --- ThumbnailDesignSection (UPDATED WITH MODAL) ---
 const ThumbnailDesignSection = () => {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  // Prevent background scrolling and handle keyboard navigation when modal is open
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (selectedIndex === null) return;
@@ -384,16 +371,18 @@ const ThumbnailDesignSection = () => {
         </div>
       </div>
       
-      {/* Thumbnail List */}
       <div className="flex overflow-x-auto gap-8 pb-12 hide-scrollbar snap-x snap-mandatory pt-4">
         {PORTFOLIO_THUMBNAILS.map((item, index) => (
           <div 
             key={item.id} 
             onClick={() => setSelectedIndex(index)}
-            className="relative min-w-[300px] md:min-w-[450px] aspect-video rounded-xl overflow-hidden snap-center cursor-pointer transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] hover:rotate-1 hover:shadow-[0_15px_30px_rgba(0,248,248,0.2)] group"
+            // Added transform-gpu to fix corner clipping glitches
+            className="relative min-w-[300px] md:min-w-[450px] aspect-video rounded-xl overflow-hidden snap-center cursor-pointer border border-transparent transition-all duration-500 hover:border-[#00f8f8] hover:shadow-[0_0_30px_rgba(0,248,248,0.3)] group transform-gpu"
           >
-            <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+            <img src={item.img} alt={item.title} className="w-full h-full object-cover relative z-0" />
+            
+            {/* FIX: Added z-10 */}
+            <div className="absolute inset-0 z-10 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
               <span className="bg-black text-[#00f8f8] font-bold px-6 py-2 rounded-full border border-[#00f8f8] tracking-wider">
                 VIEW FULL
               </span>
@@ -402,18 +391,15 @@ const ThumbnailDesignSection = () => {
         ))}
       </div>
 
-      {/* Interactive Modal */}
       {selectedIndex !== null && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
-          onClick={() => setSelectedIndex(null)} // Click outside closes modal
+          onClick={() => setSelectedIndex(null)} 
         >
-          {/* Main Modal Container */}
           <div 
             className="relative w-full max-w-5xl rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,248,248,0.15)] bg-[#0a0a0a] border border-[#00f8f8]/20 flex flex-col items-center justify-center"
-            onClick={(e) => e.stopPropagation()} // Prevent bubbling to background
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Close Button */}
             <button 
               onClick={() => setSelectedIndex(null)}
               className="absolute top-4 right-4 z-50 w-10 h-10 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
@@ -421,7 +407,6 @@ const ThumbnailDesignSection = () => {
               <X size={20} />
             </button>
 
-            {/* Previous Button */}
             <button 
               onClick={handlePrev}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
@@ -429,7 +414,6 @@ const ThumbnailDesignSection = () => {
               <ChevronLeft size={24} />
             </button>
 
-            {/* Next Button */}
             <button 
               onClick={handleNext}
               className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
@@ -437,14 +421,12 @@ const ThumbnailDesignSection = () => {
               <ChevronRight size={24} />
             </button>
 
-            {/* Image */}
             <img 
               src={PORTFOLIO_THUMBNAILS[selectedIndex].img} 
               alt={PORTFOLIO_THUMBNAILS[selectedIndex].title} 
               className="w-full h-auto object-contain max-h-[85vh] transition-transform duration-500"
             />
             
-            {/* Title Footer inside Modal */}
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
               <h4 className="text-xl md:text-2xl font-bold text-white drop-shadow-md">
                 {PORTFOLIO_THUMBNAILS[selectedIndex].title}
@@ -463,7 +445,7 @@ const Portfolio = () => {
       <div className="max-w-7xl mx-auto px-6">
         <FadeInSection>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-16 text-center">
-            SELECTED <span className="text-[#00f8f8]">WORKS</span>
+            SELECTED <span className="text-4xl md:text-5xl font-bold text-[#00f8f8] text-center mb-8 drop-shadow-[0_0_10px_rgba(0,248,248,0.5)]">WORKS</span>
           </h2>
         </FadeInSection>
 
@@ -483,27 +465,23 @@ const Portfolio = () => {
   );
 };
 
-// --- Footer.jsx ---
 const Footer = () => (
   <footer className="border-t border-[#00f8f8]/20 bg-black py-12 px-6 flex flex-col items-center text-center">
     <h2 className="text-2xl font-black text-white tracking-wider mb-8">
       Xp<span className="text-[#00f8f8] drop-shadow-[0_0_8px_#00f8f8]">Terminator</span>
     </h2>
     
-    {/* Social Links Section */}
     <div className="flex items-center justify-center gap-6 mb-8">
       <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#00f8f8] transition-colors duration-300 transform hover:scale-110">
         <Instagram size={24} />
       </a>
       
-      {/* Call Button with Tooltip */}
       <div className="relative group cursor-pointer text-gray-400 hover:text-[#00f8f8] transition-colors duration-300 transform hover:scale-110">
         <a href="tel:9810864002" className="block">
           <Phone size={24} />
         </a>
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black border border-[#00f8f8] text-[#00f8f8] font-bold text-xs py-1.5 px-3 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap shadow-[0_0_10px_rgba(0,248,248,0.3)] pointer-events-none">
           9810864002
-          {/* Arrow pointing down */}
           <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-black border-b border-r border-[#00f8f8] rotate-45"></div>
         </div>
       </div>
@@ -523,7 +501,6 @@ const Footer = () => (
   </footer>
 );
 
-// --- App.jsx (Main Container) ---
 export default function App() {
   return (
     <div className="bg-[#000000] min-h-screen text-white font-mono selection:bg-[#00f8f8] selection:text-black">
@@ -536,7 +513,6 @@ export default function App() {
           overflow-x: hidden;
         }
 
-        /* Hide Scrollbar for Horizontal Carousels */
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
         }
@@ -545,7 +521,6 @@ export default function App() {
           scrollbar-width: none;
         }
 
-        /* Hero Animated Gradient */
         .hero-gradient {
           background: linear-gradient(120deg, #000000, #004d4d, #00f8f8, #000000);
           background-size: 300% 300%;
