@@ -12,12 +12,15 @@ import {
   Phone,
   Linkedin,
   Youtube,
-  Facebook
+  Facebook,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 
-import img1 from './images/2.jpg'
+import img1 from './images/2.jpg'  
 import img2 from './images/5.jpg'
 import img3 from './images/7.jpg'
+
 
 // ==========================================
 // MOCK DATA & ASSETS
@@ -224,7 +227,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full border border-[#00f8f8] text-[#00f8f8] font-bold text-lg overflow-hidden transition-all duration-300 hover:text-black hover:shadow-[0_0_25px_#00f8f8]"
           >
-            <span className="relative z-10">Explore More</span>
+            <span className="relative z-10">My Youtube Channel</span>
             <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
             <div className="absolute inset-0 bg-[#00f8f8] -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
           </a>
@@ -315,32 +318,124 @@ const ShortVideoSection = () => (
   </div>
 );
 
-const ThumbnailDesignSection = () => (
-  <div className="mb-10">
-    <div className="flex items-center gap-3 mb-6">
-      <ImageIcon className="text-[#00f8f8]" size={28} />
-      <div>
-        <h3 className="text-2xl font-bold text-[#00f8f8]">Thumbnail Design</h3>
-        <p className="text-sm text-gray-400">High-CTR, visually striking YouTube thumbnails.</p>
+// --- ThumbnailDesignSection (UPDATED WITH MODAL) ---
+const ThumbnailDesignSection = () => {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  // Prevent background scrolling and handle keyboard navigation when modal is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedIndex === null) return;
+      if (e.key === 'Escape') setSelectedIndex(null);
+      if (e.key === 'ArrowRight') handleNext(e);
+      if (e.key === 'ArrowLeft') handlePrev(e);
+    };
+
+    if (selectedIndex !== null) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedIndex]);
+
+  const handleNext = (e) => {
+    if (e) e.stopPropagation();
+    setSelectedIndex((prev) => (prev + 1) % PORTFOLIO_THUMBNAILS.length);
+  };
+
+  const handlePrev = (e) => {
+    if (e) e.stopPropagation();
+    setSelectedIndex((prev) => (prev - 1 + PORTFOLIO_THUMBNAILS.length) % PORTFOLIO_THUMBNAILS.length);
+  };
+
+  return (
+    <div className="mb-10">
+      <div className="flex items-center gap-3 mb-6">
+        <ImageIcon className="text-[#00f8f8]" size={28} />
+        <div>
+          <h3 className="text-2xl font-bold text-[#00f8f8]">Thumbnail Design</h3>
+          <p className="text-sm text-gray-400">High-CTR, visually striking YouTube thumbnails.</p>
+        </div>
       </div>
-    </div>
-    <div className="flex overflow-x-auto gap-8 pb-12 hide-scrollbar snap-x snap-mandatory pt-4">
-      {PORTFOLIO_THUMBNAILS.map((item) => (
+      
+      {/* Thumbnail List */}
+      <div className="flex overflow-x-auto gap-8 pb-12 hide-scrollbar snap-x snap-mandatory pt-4">
+        {PORTFOLIO_THUMBNAILS.map((item, index) => (
+          <div 
+            key={item.id} 
+            onClick={() => setSelectedIndex(index)}
+            className="relative min-w-[300px] md:min-w-[450px] aspect-video rounded-xl overflow-hidden snap-center cursor-pointer transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] hover:rotate-1 hover:shadow-[0_15px_30px_rgba(0,248,248,0.2)] group"
+          >
+            <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
+              <span className="bg-black text-[#00f8f8] font-bold px-6 py-2 rounded-full border border-[#00f8f8] tracking-wider">
+                VIEW FULL
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Interactive Modal */}
+      {selectedIndex !== null && (
         <div 
-          key={item.id} 
-          className="relative min-w-[300px] md:min-w-[450px] aspect-video rounded-xl overflow-hidden snap-center cursor-pointer transition-all duration-500 transform hover:-translate-y-3 hover:scale-[1.02] hover:rotate-1 hover:shadow-[0_15px_30px_rgba(0,248,248,0.2)] group"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-10"
+          onClick={() => setSelectedIndex(null)} // Click outside closes modal
         >
-          <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-            <span className="bg-black text-[#00f8f8] font-bold px-6 py-2 rounded-full border border-[#00f8f8] tracking-wider">
-              VIEW FULL
-            </span>
+          {/* Main Modal Container */}
+          <div 
+            className="relative w-full max-w-5xl rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,248,248,0.15)] bg-[#0a0a0a] border border-[#00f8f8]/20 flex flex-col items-center justify-center"
+            onClick={(e) => e.stopPropagation()} // Prevent bubbling to background
+          >
+            {/* Close Button */}
+            <button 
+              onClick={() => setSelectedIndex(null)}
+              className="absolute top-4 right-4 z-50 w-10 h-10 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
+            >
+              <X size={20} />
+            </button>
+
+            {/* Previous Button */}
+            <button 
+              onClick={handlePrev}
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            {/* Next Button */}
+            <button 
+              onClick={handleNext}
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/60 hover:bg-[#00f8f8] text-white hover:text-black rounded-full flex items-center justify-center backdrop-blur-md transition-all duration-300 border border-white/10"
+            >
+              <ChevronRight size={24} />
+            </button>
+
+            {/* Image */}
+            <img 
+              src={PORTFOLIO_THUMBNAILS[selectedIndex].img} 
+              alt={PORTFOLIO_THUMBNAILS[selectedIndex].title} 
+              className="w-full h-auto object-contain max-h-[85vh] transition-transform duration-500"
+            />
+            
+            {/* Title Footer inside Modal */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
+              <h4 className="text-xl md:text-2xl font-bold text-white drop-shadow-md">
+                {PORTFOLIO_THUMBNAILS[selectedIndex].title}
+              </h4>
+            </div>
           </div>
         </div>
-      ))}
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 const Portfolio = () => {
   return (
