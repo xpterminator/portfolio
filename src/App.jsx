@@ -20,12 +20,14 @@ import {
 import img1 from './images/2.jpg'  
 import img2 from './images/5.jpg'
 import img3 from './images/7.jpg'
+import img4 from './images/8.jpg'
+
 
 // ==========================================
 // MOCK DATA & ASSETS
 // ==========================================
 const MOCK_VIDEOS = [
-  "https://youtu.be/bHM_Hv7yolw?si=JQq4_1erK12qVsxR",
+  "https://youtu.be/d7z29DcZ-oI?si=wAGSqGvNUERBLQ_k",
   "https://www.youtube.com/watch?v=Ixz00Ey_6nc&t=78s",
   "https://youtu.be/UvnN5SYCTmc?si=J5zLVP4ihUMBqh86"
 ];
@@ -38,8 +40,9 @@ const getYoutubeId = (url) => {
 
 const PORTFOLIO_LONG = [
   { id: 1, title: "Cinematic Tech Vlog", url: "https://youtu.be/C-uaW1JUQ1E?si=eUrF0ns8C5vZuo4p" },
-  { id: 2, title: "Tech Review Masterpiece", url: "https://www.youtube.com/watch?v=bHM_Hv7yolw&t=1s" },
-  { id: 3, title: "Tips And Trick", url: "https://www.youtube.com/watch?v=qDNmB2yJVF8&t=23s" }
+  { id: 2, title: "Podcast", url: "https://youtu.be/d7z29DcZ-oI?si=wlH7XbMGuy35cNad" },
+  { id: 3, title: "Tech Review Masterpiece", url: "https://www.youtube.com/watch?v=bHM_Hv7yolw&t=1s" },
+  { id: 4, title: "Tips And Trick", url: "https://www.youtube.com/watch?v=qDNmB2yJVF8&t=23s" }
 ];
 
 const PORTFOLIO_SHORT = [
@@ -50,9 +53,10 @@ const PORTFOLIO_SHORT = [
 ];
 
 const PORTFOLIO_THUMBNAILS = [
-  { id: 1, title: "MrBeast Style", img:img1},
-  { id: 2, title: "Podcast Thumbnail", img:img2},
-  { id: 3, title: "Tech Review", img:img3},
+  { id: 1, title: "MrBeast Style", img:img4},
+  { id: 2, title: "Podcast Thumbnail", img:img1},
+  { id: 3, title: "Tech Review", img:img2},
+  { id: 4, title: "Tech Review", img:img3}
 ];
 
 // ==========================================
@@ -245,7 +249,7 @@ const About = () => {
               </p>
               
               <p>
-                Beyond video editing, I also design click-driven thumbnails and apply my creative direction daily on my own YouTube channel, <strong className="text-[#00f8f8] font-semibold">Tech Monk</strong>. Whether it's a cinematic cut or a viral short, I deliver a premium visual standard tailored to your brand.
+                Beyond video editing, I also design click-driven thumbnails and apply my creative direction daily on my own YouTube channel, <br /><strong className="text-[#00f8f8] font-semibold">Tech Monk</strong>. Whether it's a cinematic cut or a viral short, I deliver a premium visual standard tailored to your brand.
               </p>
             </div>
           </div>
@@ -262,7 +266,7 @@ const LongVideoSection = () => (
       <MonitorPlay className="text-[#00f8f8]" size={28} />
       <div>
         <h3 className="text-2xl font-bold text-[#00f8f8]">Long Video</h3>
-        <p className="text-sm text-gray-400">Cinematic vlogs, Tech Reviews, and full-length features.</p>
+        <p className="text-sm text-gray-400">Cinematic vlogs, Podcast, Tech Reviews, and full-length features.</p>
       </div>
     </div>
     <div className="flex overflow-x-auto gap-8 pb-8 hide-scrollbar snap-x snap-mandatory">
